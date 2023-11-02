@@ -47,13 +47,14 @@ const Todo = () => {
   async function toggleComplete(id) {
     let updatedListItem = 0;
     const items = list.map( item => {
+      console.log(item);
       if ( item._id === id ) {
         item.complete = ! item.complete;
+        updatedListItem = item
       }
-      updatedListItem = item
       return item;
     });
-    await axios.put(`https://api-js401.herokuapp.com/api/v1/todo/${id}`, updatedListItem);
+    //await axios.put(`https://api-js401.herokuapp.com/api/v1/todo/${id}`, updatedListItem);
     setList(items);
 
   }

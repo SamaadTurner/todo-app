@@ -60,7 +60,10 @@ const SettingsForm = () => {
                             <span className={classes.span}>Items per page</span>
                             <NumberInput 
                                 placeholder={pageItems} 
-                                onChange={setPageItems} />
+                                onChange={setPageItems}
+                                min={1}
+                                max={15} 
+                                />
                             <span className={classes.span}>Sort Keyword</span>
                             <TextInput placeholder={sort} onChange={(event) => setSort(event.target.value)} />
                             <Button type="submit">Show New Settings</Button>

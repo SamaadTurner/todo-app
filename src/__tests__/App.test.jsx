@@ -34,5 +34,4 @@ describe('App Tests', ()  => {
     expect(footer).toBeInTheDocument();
     
   })
-
 })

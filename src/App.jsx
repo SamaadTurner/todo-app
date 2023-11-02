@@ -14,6 +14,7 @@ export default class App extends React.Component {
           <BrowserRouter>
             <Header />
               <Auth capability="read">
+                <h1>My To Do List</h1>
                 <Routes>
                   <Route path="/" element={<Todo />} />
                   <Route path="/settings" element={<SettingsForm />} />

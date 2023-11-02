@@ -13,6 +13,7 @@ function List({ list, toggleComplete, deleteItem }) {
   const displayedItems = showCompleted
     ? list
     : list.filter((item) => !item.complete);
+    console.log({displayedItems});
 
   const pages = Math.ceil(displayedItems.length / pageItems)
   const firstItem = (currentPage - 1) * pageItems;
