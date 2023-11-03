@@ -34,7 +34,6 @@ const Todo = () => {
 
   function addItem(item) {
     (async function(){
-      item.id = uuid();
       item.complete = false;
       await axios({
         baseURL: URL,
@@ -113,7 +112,7 @@ const Todo = () => {
               <form onSubmit={handleSubmit}>
                 <h2>Add To Do Item</h2>
                   <span>To Do Item</span>
-                  <TextInput onChange={handleChange} name="details" type="text" placeholder="Item Details" />
+                  <TextInput onChange={handleChange} name="text" type="text" placeholder="Item Details" />
                   <span>Assigned To</span>
                   <TextInput onChange={handleChange} name="assignee" type="text" placeholder="Assignee Name" />
                   <span>Difficulty</span>
