@@ -13,3 +13,4 @@ function Auth({ capability, children }){
 }
 
 export default Auth;
+

@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
+import { AuthContext } from "../../Context/Auth";
 import useForm from '../../hooks/form';
+const URL = import.meta.env.VITE_BASE_URL;
 import List from '../List';
 import { Button, TextInput, Grid, Slider, Card, createStyles } from '@mantine/core';
 import { v4 as uuid } from 'uuid';
@@ -20,7 +22,8 @@ const useStyles = createStyles((theme) => ({
 }));
 
 const Todo = () => {
-
+  const {token} = useContext(AuthContext);
+  
   const { classes } = useStyles();
   const [defaultValues] = useState({
     difficulty: 3,
@@ -33,14 +36,25 @@ const Todo = () => {
     (async function(){
       item.id = uuid();
       item.complete = false;
-      await axios.post('https://api-js401.herokuapp.com/api/v1/todo', item);
+      await axios({
+        baseURL: URL,
+        url: '/todo',
+        method: 'post',
+        headers: {'Authorization' : `bearer ${token}`},
+        data: item
+      });
       setList([...list, item]);
     })();
   }
 
   async function deleteItem(id) {
     const items = list.filter( item => item._id !== id );
-    await axios.delete(`https://api-js401.herokuapp.com/api/v1/todo/${id}`)
+    await axios({
+      baseURL: URL,
+      url: `/todo/${id}`,
+      method: 'delete',
+      headers: {'Authorization' : `bearer ${token}`}
+    });
     setList(items);
   }
 
@@ -54,7 +68,13 @@ const Todo = () => {
       }
       return item;
     });
-    //await axios.put(`https://api-js401.herokuapp.com/api/v1/todo/${id}`, updatedListItem);
+    await axios({
+      baseURL: URL,
+      url: `/todo/${id}`,
+      method: 'put',
+      data: updatedListItem,
+      headers: {'Authorization' : `bearer ${token}`}
+    });
     setList(items);
 
   }
@@ -70,11 +90,17 @@ const Todo = () => {
 
   useEffect(() => {
     (async function(){
-      let response = await axios.get('https://api-js401.herokuapp.com/api/v1/todo');
-      let results = response.data.results;
+      let response = await axios({
+        baseURL: URL,
+        url: '/todo',
+        method: 'get',
+        headers: {'Authorization' : `bearer ${token}`}
+      });
+
+      let results = response?.data || [];
       setList(results);
     })();
-  }, [])
+  }, [token])
 
   return (
     <>
@@ -87,7 +113,7 @@ const Todo = () => {
               <form onSubmit={handleSubmit}>
                 <h2>Add To Do Item</h2>
                   <span>To Do Item</span>
-                  <TextInput onChange={handleChange} name="text" type="text" placeholder="Item Details" />
+                  <TextInput onChange={handleChange} name="details" type="text" placeholder="Item Details" />
                   <span>Assigned To</span>
                   <TextInput onChange={handleChange} name="assignee" type="text" placeholder="Assignee Name" />
                   <span>Difficulty</span>
