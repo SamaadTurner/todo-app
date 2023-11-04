@@ -35,19 +35,22 @@ const Todo = () => {
   function addItem(item) {
     (async function(){
       item.complete = false;
-      await axios({
+      const response = await axios({
         baseURL: URL,
         url: '/todo',
         method: 'post',
         headers: {'Authorization' : `bearer ${token}`},
         data: item
       });
-      setList([...list, item]);
+      if(response.status === 201 ){
+        let results = response.data;
+        setList([...list, results]);
+      }
     })();
   }
 
   async function deleteItem(id) {
-    const items = list.filter( item => item._id !== id );
+    const items = list.filter( item => item.id !== id );
     await axios({
       baseURL: URL,
       url: `/todo/${id}`,
@@ -61,7 +64,7 @@ const Todo = () => {
     let updatedListItem = 0;
     const items = list.map( item => {
       console.log(item);
-      if ( item._id === id ) {
+      if ( item.id === id ) {
         item.complete = ! item.complete;
         updatedListItem = item
       }
@@ -96,7 +99,7 @@ const Todo = () => {
         headers: {'Authorization' : `bearer ${token}`}
       });
 
-      let results = response?.data || [];
+      let results = response.data || [];
       setList(results);
     })();
   }, [token])

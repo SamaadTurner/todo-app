@@ -23,13 +23,13 @@ function List({ list, toggleComplete, deleteItem }) {
   return (
     <>
       {finalItems.map(item => (
-        <Card shadow="md" mb="sm" withBorder key={item._id} >
+        <Card shadow="md" mb="sm" withBorder key={item.id} >
           <When condition={!item.complete}>
             <Group position="apart">
               <Group>
                 <If condition={isLoggedIn && can('update')}>
                   <Then>
-                    <Badge color="green" variant="filled" onClick={() => toggleComplete(item._id)}>Pending</Badge>
+                    <Badge color="green" variant="filled" onClick={() => toggleComplete(item.id)}>Pending</Badge>
                   </Then>
                   <Else>
                     <Badge color="green" variant="filled">Pending</Badge>
@@ -38,7 +38,7 @@ function List({ list, toggleComplete, deleteItem }) {
                 <Text>{item.assignee}  </Text>
               </Group>
               <Auth capability={'delete'}>
-                <CloseButton onClick={() => deleteItem(item._id)} />
+                <CloseButton onClick={() => deleteItem(item.id)} />
               </Auth>
             </Group>
             <hr />
@@ -50,7 +50,7 @@ function List({ list, toggleComplete, deleteItem }) {
               <Group>
                 <If condition={isLoggedIn && can('update')}>
                   <Then>
-                    <Badge color="red" variant="filled" onClick={() => toggleComplete(item._id)}>Completed</Badge>
+                    <Badge color="red" variant="filled" onClick={() => toggleComplete(item.id)}>Completed</Badge>
                   </Then>
                   <Else>
                     <Badge color="red" variant="filled">Pending</Badge>
@@ -59,7 +59,7 @@ function List({ list, toggleComplete, deleteItem }) {
                 <Text>{item.assignee}  </Text>
               </Group>
               <Auth capability={'delete'}>
-                <CloseButton onClick={() => deleteItem(item._id)} />
+                <CloseButton onClick={() => deleteItem(item.id)} />
               </Auth>
             </Group>
             <hr />
